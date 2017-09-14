@@ -46,9 +46,6 @@ public class TestCriteria extends SpringTest {
 		assertThat(farmacia).hasSize(2);
 		
 		
-		
-		
-		
 	}
 	
 	@Test
@@ -82,5 +79,31 @@ public class TestCriteria extends SpringTest {
 		assertThat(direccion).hasSize(1);
 	}
 
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void BuscarFarmaciasDeUnBarrio(){
+		
+		Direccion dir1 = new Direccion();
+		Barrio b1 = new Barrio();
+		Farmacia f2 = new Farmacia();
+		
+		b1.setNombre("Marina");
+		getSession().save(b1);
+		
+		dir1.setBarrio(b1);
+		getSession().save(dir1);
+		
+		f2.setDireccion(dir1);
+		getSession().save(f2);
+		
+		List<Farmacia> farm;
+		
+		farm = getSession().createCriteria(Farmacia.class)
+				  .createAlias("Barrio", "b1")
+				  .add(Restrictions.eq("b1.nombre", "Marina")).list();
+		
+		assertThat(farm).hasSize(1);
+	}
 
 }
