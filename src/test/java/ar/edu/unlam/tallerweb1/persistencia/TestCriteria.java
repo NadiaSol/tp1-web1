@@ -54,6 +54,8 @@ public class TestCriteria extends SpringTest {
 	public void BuscarFarmaciasDeUnaCalle() {
 		
 		Farmacia f1= new Farmacia();
+		Farmacia f2= new Farmacia();
+		
 		Direccion dir1 = new Direccion();
 		Direccion dir2 = new Direccion();
 		//Barrio barrio = new Barrio();
@@ -63,13 +65,14 @@ public class TestCriteria extends SpringTest {
 		getSession().save(dir1);
 		
 		f1.setDireccion(dir1);
+		getSession().save(f1);
 		
 		dir2.setCalle("San pedro");
 		dir2.setNumero("2336");
 		getSession().save(dir2);
 		
-		f1.setDireccion(dir2);
-		getSession().save(f1);
+		f2.setDireccion(dir2);
+		getSession().save(f2);
 		
 		List<Direccion> direccion;
 		
