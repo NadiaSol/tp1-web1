@@ -53,31 +53,40 @@ public class TestCriteria extends SpringTest {
 	@Rollback(true)
 	public void BuscarFarmaciasDeUnaCalle() {
 		
-		Farmacia f1= new Farmacia();
-		Farmacia f2= new Farmacia();
+		Farmacia farmacia1, farmacia2, farmacia3;
+		Direccion direccion1, direccion2, direccion3;
 		
-		Direccion dir1 = new Direccion();
-		Direccion dir2 = new Direccion();
-		//Barrio barrio = new Barrio();
 		
-		dir1.setCalle("San juan");
-		dir1.setNumero("3596");
-		getSession().save(dir1);
+		farmacia1 = new Farmacia();
+		farmacia2 = new Farmacia();
+		farmacia3 = new Farmacia();
 		
-		f1.setDireccion(dir1);
-		getSession().save(f1);
+		direccion1 = new Direccion();
+		direccion2 = new Direccion();
+		direccion3 = new Direccion();
 		
-		dir2.setCalle("San pedro");
-		dir2.setNumero("2336");
-		getSession().save(dir2);
+		direccion1.setCalle("Jujuy");
+		direccion2.setCalle("San juan");
+		direccion3.setCalle("Arieta");
 		
-		f2.setDireccion(dir2);
-		getSession().save(f2);
+		
+		farmacia1.setDireccion(direccion1);
+		farmacia2.setDireccion(direccion2);
+		farmacia3.setDireccion(direccion3);
+		
+		getSession().save(direccion1);
+		getSession().save(direccion2);
+		getSession().save(direccion3);
+		getSession().save(farmacia1);
+		getSession().save(farmacia2);
+		getSession().save(farmacia3);
+		
 		
 		List<Direccion> direccion;
 		
-		direccion = getSession().createCriteria(Direccion.class)
-				  .add(Restrictions.eq("calle","San Juan")).list();
+		direccion = getSession().createCriteria(Farmacia.class)
+				   .createAlias("direccion", "dir")
+				  .add(Restrictions.eq("dir.calle","San juan")).list();
 		
 		assertThat(direccion).hasSize(1);
 	}
@@ -87,26 +96,53 @@ public class TestCriteria extends SpringTest {
 	@Rollback(true)
 	public void BuscarFarmaciasDeUnBarrio(){
 		
-		Direccion dir1 = new Direccion();
-		Barrio b1 = new Barrio();
-		Farmacia f2 = new Farmacia();
+		Farmacia farmacia1, farmacia2, farmacia3;
+		Direccion direccion1, direccion2, direccion3;
+		Barrio barrio1, barrio2, barrio3;
 		
-		b1.setNombre("Marina");
-		getSession().save(b1);
+		farmacia1 = new Farmacia();
+		farmacia2 = new Farmacia();
+		farmacia3 = new Farmacia();
 		
-		dir1.setBarrio(b1);
-		getSession().save(dir1);
+		direccion1 = new Direccion();
+		direccion2 = new Direccion();
+		direccion3 = new Direccion();
 		
-		f2.setDireccion(dir1);
-		getSession().save(f2);
+		barrio1 = new Barrio();
+		barrio2 = new Barrio();
+		barrio3 = new Barrio();
 		
-		List<Farmacia> farm;
+		barrio1.setNombre("Caseros");
+		barrio2.setNombre("San Justo");
+		barrio3.setNombre("Ramos Mejia");
 		
-		farm = getSession().createCriteria(Farmacia.class)
-				  .createAlias("Barrio", "b1")
-				  .add(Restrictions.eq("b1.nombre", "Marina")).list();
+		direccion1.setBarrio(barrio1);
+		direccion2.setBarrio(barrio2);
+		direccion3.setBarrio(barrio3);
 		
-		assertThat(farm).hasSize(1);
+		farmacia1.setDireccion(direccion1);
+		farmacia2.setDireccion(direccion2);
+		farmacia3.setDireccion(direccion3);
+		
+		getSession().save(barrio1);
+		getSession().save(barrio2);
+		getSession().save(barrio3);
+		getSession().save(direccion1);
+		getSession().save(direccion2);
+		getSession().save(direccion3);
+		getSession().save(farmacia1);
+		getSession().save(farmacia2);
+		getSession().save(farmacia3);
+		
+		
+		List<Farmacia> farmaciaBarrio;
+		
+		farmaciaBarrio = getSession().createCriteria(Farmacia.class)
+				  .createAlias("direccion", "dir")
+				  .createAlias("dir.barrio", "ba")
+				  .add(Restrictions.eq("ba.nombre", "Caseros")).list();
+		
+		assertThat(farmaciaBarrio).hasSize(1);
 	}
 
 }

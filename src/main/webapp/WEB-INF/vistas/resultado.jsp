@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-El resultado de la operación es: ${total}
+
+<i>El resultado de sumar ${valor1} + ${valor2} da como resultado</i>: <b>${total}</b>
 </body>
 </html>
