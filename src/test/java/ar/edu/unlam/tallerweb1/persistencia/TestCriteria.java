@@ -13,6 +13,8 @@ import ar.edu.unlam.tallerweb1.modelo.Farmacia;
 
 public class TestCriteria extends SpringTest {
 	
+	
+	
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -66,8 +68,12 @@ public class TestCriteria extends SpringTest {
 		direccion3 = new Direccion();
 		
 		direccion1.setCalle("Jujuy");
+		direccion1.setNumero("123");
 		direccion2.setCalle("San juan");
+		direccion2.setNumero("1001");
 		direccion3.setCalle("Arieta");
+		direccion3.setNumero("557");
+		
 		
 		
 		farmacia1.setDireccion(direccion1);
